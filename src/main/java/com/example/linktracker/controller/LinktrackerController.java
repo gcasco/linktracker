@@ -58,7 +58,7 @@ public class LinktrackerController {
 
     ///CreateLink
     @PostMapping("/link")
-    public LinkOutputDTO redirectPostToPost(@RequestBody LinkInputDTO linkId) throws LinkInvalidException {
+    public LinkOutputDTO redirectPostToPostESTEMETODOESTAMAL(@RequestBody LinkInputDTO linkId) throws LinkInvalidException {
         LinkOutputDTO linkOutputDTO = new LinkOutputDTO();
         if (isValid(linkId.getUrl())) {
             linkOutputDTO.setLinId(service.addLink(linkId));
