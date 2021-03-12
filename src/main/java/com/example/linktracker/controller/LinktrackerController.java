@@ -22,8 +22,7 @@ public class LinktrackerController {
     @Autowired
     private ILinktrackerService service;
 
-    public static boolean isValid(String url)
-    {
+    public static boolean isValid(String url) {
         /* Try creating a valid URL */
         try {
             new URL(url).toURI();
@@ -40,9 +39,10 @@ public class LinktrackerController {
     ///Redirect
     @GetMapping(value = "link/{linkId}", params = {"password"})
     public RedirectView redirectView(@PathVariable Integer linkId, @RequestParam("password") String password) throws LinkNotFoundException, LinkInvalidException {
-        String url = service.getLink(linkId,password);
+        String url = service.getLink(linkId, password);
         return new RedirectView(url);
     }
+
     ///Invalidate
     @PostMapping("/invalidate/{linkId}")
     public void invalidateLink(@PathVariable Integer linkId) throws LinkNotFoundException, LinkInvalidException {
@@ -53,16 +53,16 @@ public class LinktrackerController {
     @GetMapping("/metrics/{linkId}")
     public Integer getMetricsByLinkId(@PathVariable Integer linkId) throws LinkNotFoundException, LinkInvalidException {
 
-        return  service.getMetrics(linkId);
+        return service.getMetrics(linkId);
     }
 
     ///CreateLink
     @PostMapping("/link")
     public LinkOutputDTO redirectPostToPost(@RequestBody LinkInputDTO linkId) throws LinkInvalidException {
         LinkOutputDTO linkOutputDTO = new LinkOutputDTO();
-        if(isValid(linkId.getUrl())){
+        if (isValid(linkId.getUrl())) {
             linkOutputDTO.setLinId(service.addLink(linkId));
-        }else{
+        } else {
             throw new LinkInvalidException();
         }
 
@@ -70,12 +70,12 @@ public class LinktrackerController {
     }
 
     @ExceptionHandler(LinkInvalidException.class)
-    public ResponseEntity<String> handlerException(LinkInvalidException linkInvalidException){
+    public ResponseEntity<String> handlerException(LinkInvalidException linkInvalidException) {
         return new ResponseEntity<>(linkInvalidException.getMESSAGE(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(LinkNotFoundException.class)
-    public ResponseEntity<String> handlerException(LinkNotFoundException linkNotFoundException){
+    public ResponseEntity<String> handlerException(LinkNotFoundException linkNotFoundException) {
 
         return new ResponseEntity<>(linkNotFoundException.getMESSAGE(), HttpStatus.NOT_FOUND);
     }

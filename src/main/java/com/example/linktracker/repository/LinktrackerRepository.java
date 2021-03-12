@@ -12,13 +12,13 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class LinktrackerReporitory implements ILinktrackerRepository{
-    private static List<LinkStatus> linkMemory=new ArrayList<>();
+public class LinktrackerRepository implements ILinktrackerRepository {
+    private static List<LinkStatus> linkMemory = new ArrayList<>();
 
 
     @Override
     public Integer addLink(LinkInputDTO linkInputDTO) {
-        LinkStatus link=new LinkStatus();
+        LinkStatus link = new LinkStatus();
         link.setLinkId(linkMemory.size());
         link.setStatus(true);
         link.setUrl(linkInputDTO.getUrl());
@@ -27,32 +27,32 @@ public class LinktrackerReporitory implements ILinktrackerRepository{
         linkMemory.add(link);
         return link.getLinkId();
     }
+
     public void invalidateLink(Integer linkId) throws LinkNotFoundException {
         try {
-             linkMemory.get(linkId).setStatus(false);
-        }catch (Exception e){
+            linkMemory.get(linkId).setStatus(false);
+        } catch (Exception e) {
             throw new LinkNotFoundException();
         }
     }
 
     @Override
     public Integer getMetrics(Integer linkId) throws LinkNotFoundException {
-         try{
-             return linkMemory.get(linkId).getMetric();
-         }catch (Exception e){
-            throw new LinkNotFoundException();
-         }
-    }
-
-    @Override
-    public LinkStatus getLink(Integer linkId) throws  LinkNotFoundException {
         try {
-            linkMemory.get(linkId).setMetric(linkMemory.get(linkId).getMetric()+1);
-            return linkMemory.get(linkId);
-        }catch (Exception e){
-            throw  new LinkNotFoundException();
+            return linkMemory.get(linkId).getMetric();
+        } catch (Exception e) {
+            throw new LinkNotFoundException();
         }
     }
 
+    @Override
+    public LinkStatus getLink(Integer linkId) throws LinkNotFoundException {
+        try {
+            linkMemory.get(linkId).setMetric(linkMemory.get(linkId).getMetric() + 1);
+            return linkMemory.get(linkId);
+        } catch (Exception e) {
+            throw new LinkNotFoundException();
+        }
+    }
 
 }
