@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class LinktrackerService implements ILinktrackerService {
 
-
     @Autowired
     private ILinktrackerRepository repository;
 
@@ -22,14 +21,12 @@ public class LinktrackerService implements ILinktrackerService {
 
     @Override
     public String getLink(Integer linkId, String password) throws LinkNotFoundException, LinkInvalidException {
-        LinkStatus linkStatus= repository.getLink(linkId);
-        if(linkStatus.getStatus() && linkStatus.getPassword().equals(password)){
-           return linkStatus.getUrl();
-        }
-        else {
+        LinkStatus linkStatus = repository.getLink(linkId);
+        if (linkStatus.getStatus() && linkStatus.getPassword().equals(password)) {
+            return linkStatus.getUrl();
+        } else {
             throw new LinkInvalidException();
         }
-
     }
 
     @Override
